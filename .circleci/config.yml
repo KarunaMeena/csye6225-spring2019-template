@@ -3,6 +3,7 @@ jobs:
   build:
     docker:
       - image: circleci/openjdk:8-jdk
+      - image: circleci/python:2.7-jessie
     steps:
       - checkout
 
@@ -10,7 +11,7 @@ jobs:
           name: Install packages
           command: sudo apt-get update && sudo apt-get install wget zip unzip -y
 
-          
+
       - run:
           name: Install awscli
           command: sudo pip install awscli
