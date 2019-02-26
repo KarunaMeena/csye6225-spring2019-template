@@ -10,7 +10,7 @@
 | | | |
 
 ## Technology Stack
-
+Spring Boot
 
 ## Build Instructions
 
