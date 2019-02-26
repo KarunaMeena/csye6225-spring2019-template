@@ -7,6 +7,15 @@ jobs:
       - checkout
 
       - run:
+          name: Install packages
+          command: sudo apt-get update && sudo apt-get install wget zip unzip -y
+
+          
+      - run:
+          name: Install awscli
+          command: sudo pip install awscli
+
+      - run:
           name: Build Artifact
           command: |
             cd webapp
@@ -41,7 +50,7 @@ jobs:
       - run:
           name: Upload Artifact to S3
           command: |
-            echo "Hello"
+            aws s3 sync codedeploy_artifact s3://code-deploy.fangn.me
       - run:
           name: Make CodeDeploy API call
           command: |
