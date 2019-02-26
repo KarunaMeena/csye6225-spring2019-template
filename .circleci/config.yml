@@ -6,33 +6,19 @@ jobs:
     steps:
       - checkout
 
+      - run:
+          name: Build Artifact
+          command: |
+            cd webapp
+            pwd
+            ls -al
+            mvn clean package -DskipTests
+            cd target/
+            ls -al
+            cd ../
+            pwd
+            ls -al
 
-      # - restore_cache:
-      #     key: circleci-demo-java-spring-{{ checksum "pom.xml" }}
-      
-      - run: mvn dependency:go-offline
-      
-      # - save_cache:
-      #     paths:
-      #       - ~/.m2
-      #     key: circleci-demo-java-spring-{{ checksum "pom.xml" }}
-      
-      - run: mvn package
-      
-      - store_test_results:
-          path: target/surefire-reports
-      
-      - store_artifacts:
-          path: target/csye6225-web-app-SNAPSHOT.war
-      # - run:
-      #     name: Build Artifact
-      #     command: |
-      #       cd webapp
-      #       mvn --version
-      #       mvn install
-      #       cd build/libs
-      #       ls -al
-      #       cd ../../..
       - run:
           name: Zip Artifact
           command: |
@@ -41,7 +27,7 @@ jobs:
             ls -al
             mkdir -p codedeploy_artifact
             cp infrastructure/aws/codedeploy/*.sh .
-            zip -r csye6225-web-app-${CIRCLE_BUILD_NUM}.zip webapp/build/libs/ROOT.war *.sh *.yml
+            zip -r csye6225-web-app-${CIRCLE_BUILD_NUM}.zip webapp/target/webapp-0.0.1-SNAPSHOT.war *.sh *.yml
             ls -al
             mv csye6225-web-app-${CIRCLE_BUILD_NUM}.zip codedeploy_artifact/
             ls -al
