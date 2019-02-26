@@ -9,7 +9,8 @@ jobs:
           name: Build Artifact
           command: |
             cd webapp
-            ./gradlew war
+            mvn --version
+            mvn  war
             cd build/libs
             ls -al
             cd ../../..
