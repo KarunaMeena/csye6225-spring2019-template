@@ -5,15 +5,34 @@ jobs:
       - image: circleci/openjdk:8-jdk
     steps:
       - checkout
-      - run:
-          name: Build Artifact
-          command: |
-            cd webapp
-            mvn --version
-            mvn install
-            cd build/libs
-            ls -al
-            cd ../../..
+
+
+      - restore_cache:
+          key: circleci-demo-java-spring-{{ checksum "pom.xml" }}
+      
+      - run: mvn dependency:go-offline
+      
+      - save_cache:
+          paths:
+            - ~/.m2
+          key: circleci-demo-java-spring-{{ checksum "pom.xml" }}
+      
+      - run: mvn package
+      
+      - store_test_results:
+          path: target/surefire-reports
+      
+      - store_artifacts:
+          path: target/csye6225-web-app-SNAPSHOT.war
+      # - run:
+      #     name: Build Artifact
+      #     command: |
+      #       cd webapp
+      #       mvn --version
+      #       mvn install
+      #       cd build/libs
+      #       ls -al
+      #       cd ../../..
       - run:
           name: Zip Artifact
           command: |
