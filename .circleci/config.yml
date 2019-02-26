@@ -10,7 +10,7 @@ jobs:
           command: |
             cd webapp
             mvn --version
-            mvn  war
+            mvn package
             cd build/libs
             ls -al
             cd ../../..
